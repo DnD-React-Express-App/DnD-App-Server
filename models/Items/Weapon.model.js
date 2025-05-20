@@ -1,4 +1,4 @@
-const Item = require('../Item');
+const Item = require('../Item.model');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 

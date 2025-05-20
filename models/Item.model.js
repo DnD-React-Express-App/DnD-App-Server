@@ -8,11 +8,6 @@ const itemSchema = new Schema({
         type: String,
         enum: ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary', 'Artifact'],
         default: 'Common'
-    },
-    type: {
-        type: String,
-        required: true,
-        enum: ['Weapon', 'Armor', 'Potion', 'Tool', 'Misc']
     }
 }, {
     discriminatorKey: 'type',

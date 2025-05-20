@@ -11,9 +11,9 @@ const modelMap = {
 };
 
 router.post('/', async (req, res) => {
-  const { itemType } = req.body;
+  const { type } = req.body;
 
-  const Model = modelMap[itemType];
+  const Model = modelMap[type];
   if (!Model) {
     return res.status(400).json({ error: 'Invalid item type' });
   }

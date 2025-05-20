@@ -1,4 +1,4 @@
-const Item = require('../Item');
+const Item = require('../Item.model');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
@@ -34,4 +34,4 @@ const armorSchema = new Schema({
   weight: { type: Number },
 });
 
-module.exports = Item.discriminator('armor', armorSchema);
+module.exports = Item.discriminator('Armor', armorSchema);
