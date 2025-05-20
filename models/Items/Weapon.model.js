@@ -7,7 +7,8 @@ const weaponSchema = new Schema({
         enum: ['Slashing', 'Piercing', 'Bludgeoning'],
         required: true},
     range: String,
-    weaponType: { type: String, enum: ['Melee', 'Ranged', 'Thrown', 'Magic'] }
+    weaponType: { type: String, enum: ['Melee', 'Ranged', 'Thrown', 'Magic'] },
+    weight: { type: Number },
 });
 
 module.exports = Item.discriminator('Weapon', weaponSchema);
