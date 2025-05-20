@@ -27,4 +27,7 @@ app.use("/api/characters", characterRoutes);
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 
+const itemRoutes = require('./routes/item.routes');
+app.use('/api/items', itemRoutes);
+
 module.exports = app;
