@@ -2,7 +2,6 @@ const Item = require('../Item.model');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-// Default Weapon Mastery Mapping
 const masteryMap = {
     Cleave: ['Greataxe', 'Halberd', 'Greatsword'],
     Nick: ['Dagger', 'LightHammer', 'Sickle', 'Scimitar'],
@@ -11,7 +10,6 @@ const masteryMap = {
     Precision: ['Longsword', 'Crossbow', 'Bow'],
 };
 
-// Default Weapon Properties Mapping
 const propertyMap = {
     Greataxe: ['Heavy', 'Two-Handed'],
     Dagger: ['Light', 'Finesse', 'Thrown'],
@@ -88,9 +86,7 @@ const weaponSchema = new Schema({
     weight: Number,
 });
 
-// Hook to assign defaults if not provided
 weaponSchema.pre('save', function (next) {
-    // Auto-set weaponMastery if not manually set
     if (!this.weaponMastery) {
         for (const [mastery, weapons] of Object.entries(masteryMap)) {
             if (weapons.includes(this.weaponType)) {
@@ -100,7 +96,6 @@ weaponSchema.pre('save', function (next) {
         }
     }
 
-    // Auto-set weaponProperties if not manually set
     if (!this.weaponProperties || this.weaponProperties.length === 0) {
         this.weaponProperties = propertyMap[this.weaponType] || [];
     }
