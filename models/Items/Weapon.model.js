@@ -2,74 +2,110 @@ const Item = require('../Item.model');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const weaponSchema = new Schema({
-  weaponName: { type: String, required: true },
-  weaponType: {
-    type: String,
-    required: true,
-    enum: [
-      'Greataxe', 'Dagger', 'Rapier', 'Scimitar', 'Longsword',
-      'Shortsword', 'Mace', 'Greatsword', 'Warhammer', 'Bow',
-      'Crossbow', 'Staff', 'Spear', 'Club', 'Halberd', 'Light Hammer', 'Sickle', 'Other'
-    ]
-  },
-  weaponAttribute: {
-    type: String,
-    enum: ['Melee', 'Ranged', 'Thrown', 'Magic'],
-    required: true
-  },
-  weaponBonus: {
-    type: Number,
-    enum: [1, 2, 3, 4, 5],
-    required: false
-  },
-  damageTypes: [
-    {
-      type: {
-        type: String,
-        enum: [
-          'Slashing', 'Piercing', 'Bludgeoning', 'Fire', 'Cold',
-          'Acid', 'Necrotic', 'Radiant', 'Poison', 'Psychic',
-          'Thunder', 'Force', 'Lightning'
-        ],
-        required: true
-      },
-      die: {
-        type: String,
-        required: true,
-        match: /^\d+d\d+$/ // e.g., 1d6
-      }
-    }
-  ],
-  weaponMastery: {
-    type: String,
-    enum: ['Cleave', 'Nick', 'Vex', 'Push', 'Slow', 'Flex', 'None'],
-    default: 'None'
-  },
-  range: String,
-  weight: Number
-});
-
-// Weapon Mastery Mapping
+// Default Weapon Mastery Mapping
 const masteryMap = {
-  Cleave: ['Greataxe', 'Halberd'],
-  Nick: ['Dagger', 'Light Hammer', 'Sickle', 'Scimitar'],
-  Vex: ['Rapier', 'Shortsword'],
-  Push: ['Warhammer', 'Mace'],
-  Slow: ['Greatsword'],
-  Flex: ['Longsword', 'Spear']
+    Cleave: ['Greataxe', 'Halberd', 'Greatsword'],
+    Nick: ['Dagger', 'LightHammer', 'Sickle', 'Scimitar'],
+    Pierce: ['Rapier', 'Spear', 'Shortsword'],
+    Smash: ['Warhammer', 'Mace', 'Club'],
+    Precision: ['Longsword', 'Crossbow', 'Bow'],
 };
 
-// Auto-assign weaponMastery based on weaponType
+// Default Weapon Properties Mapping
+const propertyMap = {
+    Greataxe: ['Heavy', 'Two-Handed'],
+    Dagger: ['Light', 'Finesse', 'Thrown'],
+    Rapier: ['Finesse'],
+    Scimitar: ['Finesse', 'Light'],
+    Longsword: ['Versatile'],
+    Shortsword: ['Finesse', 'Light'],
+    Mace: [],
+    Greatsword: ['Heavy', 'Two-Handed'],
+    Warhammer: ['Versatile'],
+    Bow: ['Ammunition', 'Two-Handed'],
+    Crossbow: ['Ammunition', 'Loading', 'Two-Handed'],
+    Staff: ['Versatile'],
+    Spear: ['Thrown', 'Versatile'],
+    Club: ['Light'],
+    Halberd: ['Heavy', 'Two-Handed', 'Reach'],
+    LightHammer: ['Light', 'Thrown'],
+    Sickle: ['Light'],
+};
+
+const weaponSchema = new Schema({
+    weaponName: {
+        type: String,
+        required: true,
+    },
+    weaponType: {
+        type: String,
+        required: true,
+        enum: Object.keys(propertyMap),
+    },
+    weaponAttribute: {
+        type: String,
+        enum: ['Melee', 'Ranged', 'Thrown', 'Magic'],
+        required: true
+    },
+    weaponBonus: {
+        type: Number,
+        enum: [1, 2, 3, 4, 5],
+    },
+    damageTypes: [
+        {
+            type: {
+                type: String,
+                enum: ['Slashing', 'Piercing', 'Bludgeoning', 'Fire', 'Cold', 'Acid', 'Necrotic', 'Radiant', 'Poison', 'Psychic', 'Thunder', 'Force', 'Lightning'],
+                required: true
+            },
+            die: {
+                type: String,
+                required: true,
+                match: /^\d+d\d+$/,
+            }
+        }
+    ],
+    weaponMastery: {
+        type: String,
+        enum: Object.keys(masteryMap),
+    },
+    weaponProperties: [{
+        type: String,
+        enum: [
+            'Light',
+            'Heavy',
+            'Reach',
+            'Two-Handed',
+            'Finesse',
+            'Thrown',
+            'Ammunition',
+            'Versatile',
+            'Loading',
+            'Special'
+        ]
+    }],
+    range: String,
+    weight: Number,
+});
+
+// Hook to assign defaults if not provided
 weaponSchema.pre('save', function (next) {
-  for (const [mastery, weapons] of Object.entries(masteryMap)) {
-    if (weapons.includes(this.weaponType)) {
-      this.weaponMastery = mastery;
-      return next();
+    // Auto-set weaponMastery if not manually set
+    if (!this.weaponMastery) {
+        for (const [mastery, weapons] of Object.entries(masteryMap)) {
+            if (weapons.includes(this.weaponType)) {
+                this.weaponMastery = mastery;
+                break;
+            }
+        }
     }
-  }
-  this.weaponMastery = 'None';
-  next();
+
+    // Auto-set weaponProperties if not manually set
+    if (!this.weaponProperties || this.weaponProperties.length === 0) {
+        this.weaponProperties = propertyMap[this.weaponType] || [];
+    }
+
+    next();
 });
 
 module.exports = Item.discriminator('Weapon', weaponSchema);
