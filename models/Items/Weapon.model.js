@@ -2,6 +2,26 @@ const Item = require('../Item.model');
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+const baseDamageMap = {
+  Greataxe: [{ type: 'Slashing', die: '1d12' }],
+  Greatsword: [{ type: 'Slashing', die: '2d6' }],
+  Dagger: [{ type: 'Piercing', die: '1d4' }],
+  Rapier: [{ type: 'Piercing', die: '1d8' }],
+  Scimitar: [{ type: 'Slashing', die: '1d6' }],
+  Longsword: [{ type: 'Slashing', die: '1d8' }],
+  Shortsword: [{ type: 'Piercing', die: '1d6' }],
+  Mace: [{ type: 'Bludgeoning', die: '1d6' }],
+  Warhammer: [{ type: 'Bludgeoning', die: '1d8' }],
+  Bow: [{ type: 'Piercing', die: '1d8' }],
+  Crossbow: [{ type: 'Piercing', die: '1d8' }],
+  Staff: [{ type: 'Bludgeoning', die: '1d6' }],
+  Spear: [{ type: 'Piercing', die: '1d6' }],
+  Club: [{ type: 'Bludgeoning', die: '1d4' }],
+  Halberd: [{ type: 'Slashing', die: '1d10' }],
+  LightHammer: [{ type: 'Bludgeoning', die: '1d4' }],
+  Sickle: [{ type: 'Slashing', die: '1d4' }],
+};
+
 const masteryMap = {
     Cleave: ['Greataxe', 'Halberd', 'Greatsword'],
     Nick: ['Dagger', 'LightHammer', 'Sickle', 'Scimitar'],
@@ -99,6 +119,10 @@ weaponSchema.pre('save', function (next) {
     if (!this.weaponProperties || this.weaponProperties.length === 0) {
         this.weaponProperties = propertyMap[this.weaponType] || [];
     }
+
+    if (!this.damageTypes || this.damageTypes.length === 0) {
+    this.damageTypes = baseDamageMap[this.weaponType] || [];
+  }
 
     next();
 });
