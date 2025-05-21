@@ -52,4 +52,21 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
   }
 });
 
+router.put('/:id', isAuthenticated, async (req, res) => {
+  try {
+    const updated = await Item.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updated) {
+      return res.status(404).json({ error: 'Item not found' });
+    }
+
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
 module.exports = router;
