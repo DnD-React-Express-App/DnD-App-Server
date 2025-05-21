@@ -3,23 +3,42 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const baseDamageMap = {
-  Greataxe: [{ type: 'Slashing', die: '1d12' }],
-  Greatsword: [{ type: 'Slashing', die: '2d6' }],
-  Dagger: [{ type: 'Piercing', die: '1d4' }],
-  Rapier: [{ type: 'Piercing', die: '1d8' }],
-  Scimitar: [{ type: 'Slashing', die: '1d6' }],
-  Longsword: [{ type: 'Slashing', die: '1d8' }],
-  Shortsword: [{ type: 'Piercing', die: '1d6' }],
-  Mace: [{ type: 'Bludgeoning', die: '1d6' }],
-  Warhammer: [{ type: 'Bludgeoning', die: '1d8' }],
-  Bow: [{ type: 'Piercing', die: '1d8' }],
-  Crossbow: [{ type: 'Piercing', die: '1d8' }],
-  Staff: [{ type: 'Bludgeoning', die: '1d6' }],
-  Spear: [{ type: 'Piercing', die: '1d6' }],
-  Club: [{ type: 'Bludgeoning', die: '1d4' }],
-  Halberd: [{ type: 'Slashing', die: '1d10' }],
-  LightHammer: [{ type: 'Bludgeoning', die: '1d4' }],
-  Sickle: [{ type: 'Slashing', die: '1d4' }],
+    Greataxe: [{ type: 'Slashing', die: '1d12' }],
+    Greatsword: [{ type: 'Slashing', die: '2d6' }],
+    Dagger: [{ type: 'Piercing', die: '1d4' }],
+    Rapier: [{ type: 'Piercing', die: '1d8' }],
+    Scimitar: [{ type: 'Slashing', die: '1d6' }],
+    Longsword: [{ type: 'Slashing', die: '1d8' }],
+    Shortsword: [{ type: 'Piercing', die: '1d6' }],
+    Mace: [{ type: 'Bludgeoning', die: '1d6' }],
+    Warhammer: [{ type: 'Bludgeoning', die: '1d8' }],
+    Bow: [{ type: 'Piercing', die: '1d8' }],
+    Crossbow: [{ type: 'Piercing', die: '1d8' }],
+    Staff: [{ type: 'Bludgeoning', die: '1d6' }],
+    Spear: [{ type: 'Piercing', die: '1d6' }],
+    Club: [{ type: 'Bludgeoning', die: '1d4' }],
+    Halberd: [{ type: 'Slashing', die: '1d10' }],
+    LightHammer: [{ type: 'Bludgeoning', die: '1d4' }],
+    Sickle: [{ type: 'Slashing', die: '1d4' }],
+};
+
+const rangeMap = {
+    Melee: [
+        'Greataxe', 'Greatsword', 'Dagger', 'Rapier', 'Scimitar', 'Longsword',
+        'Shortsword', 'Mace', 'Warhammer', 'Staff', 'Spear', 'Club', 'Halberd',
+        'LightHammer', 'Sickle'
+    ],
+    Ranged: [
+        'Bow', 'Crossbow'
+    ],
+};
+
+const classMap = {
+    Simple: ['Club', 'Dagger', 'LightHammer', 'Sickle', 'Spear', 'Staff', 'Mace'],
+    Martial: [
+        'Greataxe', 'Greatsword', 'Rapier', 'Scimitar', 'Longsword', 'Shortsword',
+        'Warhammer', 'Bow', 'Crossbow', 'Halberd'
+    ],
 };
 
 const masteryMap = {
@@ -60,10 +79,13 @@ const weaponSchema = new Schema({
         required: true,
         enum: Object.keys(propertyMap),
     },
-    weaponAttribute: {
+    weaponRangeCategory: {
         type: String,
-        enum: ['Melee', 'Ranged', 'Thrown', 'Magic'],
-        required: true
+        enum: ['Melee', 'Ranged'],
+    },
+    weaponClass: {
+        type: String,
+        enum: ['Simple', 'Martial'],
     },
     weaponBonus: {
         type: Number,
@@ -116,13 +138,31 @@ weaponSchema.pre('save', function (next) {
         }
     }
 
+    if (!this.weaponRangeCategory) {
+        for (const [rangeType, weapons] of Object.entries(rangeMap)) {
+            if (weapons.includes(this.weaponType)) {
+                this.weaponRangeCategory = rangeType;
+                break;
+            }
+        }
+    }
+
+    if (!this.weaponClass) {
+        for (const [classType, weapons] of Object.entries(classMap)) {
+            if (weapons.includes(this.weaponType)) {
+                this.weaponClass = classType;
+                break;
+            }
+        }
+    }
+
     if (!this.weaponProperties || this.weaponProperties.length === 0) {
         this.weaponProperties = propertyMap[this.weaponType] || [];
     }
 
     if (!this.damageTypes || this.damageTypes.length === 0) {
-    this.damageTypes = baseDamageMap[this.weaponType] || [];
-  }
+        this.damageTypes = baseDamageMap[this.weaponType] || [];
+    }
 
     next();
 });
