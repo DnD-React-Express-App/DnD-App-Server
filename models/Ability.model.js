@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-const characterSchema = new Schema({
+const abilitySchema = new Schema({
     stats: {
         strength: { type: Number, required: true },
         dexterity: { type: Number, required: true },
@@ -12,4 +12,4 @@ const characterSchema = new Schema({
     },
 });
 
-module.exports = model('Character', characterSchema);
+module.exports = model('Ability', abilitySchema);
