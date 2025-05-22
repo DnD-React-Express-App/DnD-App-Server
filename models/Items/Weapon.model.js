@@ -67,6 +67,9 @@ const propertyMap = {
     Halberd: ['Heavy', 'Two-Handed', 'Reach'],
     LightHammer: ['Light', 'Thrown'],
     Sickle: ['Light'],
+    Battleaxe: ['Versatile'],
+    Greatclub: ['Two-Handed'],
+    Handaxe: ['Light', 'Thrown']
 };
 
 const weaponSchema = new Schema({
@@ -89,7 +92,7 @@ const weaponSchema = new Schema({
     },
     weaponBonus: {
         type: Number,
-        enum: [1, 2, 3, 4, 5],
+        enum: [0, 1, 2, 3, 4, 5],
     },
     damageTypes: [
         {
