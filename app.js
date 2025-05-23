@@ -32,12 +32,6 @@ app.use("/api/auth", authRoutes);
 const characterRoutes = require("./routes/character.routes");
 app.use("/api/characters", characterRoutes);
 
-const speciesRoutes = require("./routes/species.routes");
-app.use('/api/species', speciesRoutes);
-
-const speciesFeatureRoutes = require("./routes/speciesFeatures.routes");
-app.use('/api/species-features', speciesFeatureRoutes);
-
 const itemRoutes = require('./routes/item.routes');
 app.use('/api/items', itemRoutes);
 
