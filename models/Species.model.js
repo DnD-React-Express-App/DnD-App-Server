@@ -1,33 +1,32 @@
 const mongoose = require('mongoose');
-const { Schema, model } = mongoose;
+const { Schema, model, Types } = mongoose;
 
 const speciesSchema = new Schema({
-    race: {
-        type: String,
-        enum: [
-          'Human',
-          'Elf',
-          'Half-Elf',
-          'Dwarf',
-          'Halfling',
-          'Gnome',
-          'Half-Orc',
-          'Dragonborn',
-          'Tiefling',
-          'Aasimar',
-          'Genasi',
-          'Goliath',
-          'Tabaxi',
-          'Triton',
-          'Firbolg',
-          'Kenku',
-          'Lizardfolk',
-          'Goblin',
-          'Orc',
-          'Bugbear'
-        ],
-        required: true
-      },
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
+  creatureType: {
+    type: String,
+    required: true,
+  },
+  size: {
+    type: String,
+    enum: [
+      'Tiny',
+      'Small',
+      'Medium',
+      'Large',
+    ],
+    required: true,
+  },
+  speed: {
+      type: Number,
+      required: true,
+    },
+  abilities: [{ type: Types.ObjectId, ref: 'SpeciesFeature' }]
 });
 
-module.exports = model('Species', spiecesSchema);
+module.exports = model('Species', speciesSchema);
