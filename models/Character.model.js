@@ -17,10 +17,10 @@ const characterSchema = new Schema({
                 'Fighter',
                 'Monk',
                 'Paladin',
-                'Ranger', 
-                'Rogue', 
-                'Sorcerer', 
-                'Warlock', 
+                'Ranger',
+                'Rogue',
+                'Sorcerer',
+                'Warlock',
                 'Wizard'],
             required: true
         },
@@ -33,29 +33,29 @@ const characterSchema = new Schema({
     race: {
         type: String,
         enum: [
-          'Human',
-          'Elf',
-          'Half-Elf',
-          'Dwarf',
-          'Halfling',
-          'Gnome',
-          'Half-Orc',
-          'Dragonborn',
-          'Tiefling',
-          'Aasimar',
-          'Genasi',
-          'Goliath',
-          'Tabaxi',
-          'Triton',
-          'Firbolg',
-          'Kenku',
-          'Lizardfolk',
-          'Goblin',
-          'Orc',
-          'Bugbear'
+            'Human',
+            'Elf',
+            'Half-Elf',
+            'Dwarf',
+            'Halfling',
+            'Gnome',
+            'Half-Orc',
+            'Dragonborn',
+            'Tiefling',
+            'Aasimar',
+            'Genasi',
+            'Goliath',
+            'Tabaxi',
+            'Triton',
+            'Firbolg',
+            'Kenku',
+            'Lizardfolk',
+            'Goblin',
+            'Orc',
+            'Bugbear'
         ],
         required: true
-      },
+    },
     level: {
         type: Number,
         required: true,
@@ -77,6 +77,10 @@ const characterSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
+        required: true
+    },
+    background: {
+        type: String,
         required: true
     },
     backstory: {
