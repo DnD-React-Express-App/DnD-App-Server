@@ -51,7 +51,7 @@ const standardArmorValues = {
 };
 
 const armorSchema = new Schema({
-  armorName: { type: String, required: true },
+  name: { type: String, required: true },
   armorType: {
     type: String,
     required: true,

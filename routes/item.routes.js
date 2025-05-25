@@ -54,19 +54,20 @@ router.delete('/:id', isAuthenticated, async (req, res) => {
 
 router.put('/:id', isAuthenticated, async (req, res) => {
   try {
-    const updated = await Item.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const item = await Item.findById(req.params.id);
 
-    if (!updated) {
+    if (!item) {
       return res.status(404).json({ error: 'Item not found' });
     }
 
-    res.json(updated);
+    item.set(req.body);     
+    await item.save();       
+
+    res.json(item);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 module.exports = router;
