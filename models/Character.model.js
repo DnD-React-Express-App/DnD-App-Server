@@ -79,7 +79,11 @@ const characterSchema = new Schema({
         armor: [String],
         weapons: [String],
         tools: [String]
-      },
+    },
+    expertise: {
+        type: [String],
+        default: [],
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'User',
