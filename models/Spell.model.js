@@ -24,6 +24,7 @@ const spellSchema = new Schema({
       'Instantaneous',
       'Concentration, up to 1 minute',
       'Concentration, up to 10 minutes',
+      '1 round',
       '1 minute',
       '10 minutes',
       '1 hour',
@@ -33,6 +34,9 @@ const spellSchema = new Schema({
     ],
   },
   description: String,
+  concentration: { type: Boolean, default: false },
+  ritual: { type: Boolean, default: false },
+  classes: [String],
   attackSave: {
     type: String,
     enum: [
