@@ -73,10 +73,6 @@ const propertyMap = {
 };
 
 const weaponSchema = new Schema({
-    weaponName: {
-        type: String,
-        required: true,
-    },
     weaponType: {
         type: String,
         required: true,
