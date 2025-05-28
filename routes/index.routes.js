@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require('mongoose');
 
 router.get("/", (req, res, next) => {
   res.json("All good in here");
@@ -10,7 +11,7 @@ router.get("/health", (req, res, next) => {
     .then(() => {
       res.status(200).json({
         status: 'ok',
-        timestamp: new Date.toISOString()
+        timestamp: new Date()
       });
     })
     .catch(err => {
