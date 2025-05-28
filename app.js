@@ -16,7 +16,7 @@ const app = express();
 
 app.use(
     cors({
-      origin: [FRONTEND_URL, 'https://dnd-app-client.netlify.app/'],
+      origin: [FRONTEND_URL, 'https://dnd-app-client.netlify.app/api'],
       credentials: true
     })
   );
