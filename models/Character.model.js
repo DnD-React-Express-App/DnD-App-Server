@@ -18,12 +18,13 @@ const characterSchema = new Schema({
     level: {
       type: Number,
       required: true,
-      min: 1
+      min: 1,
+      default: 1
+    },
+    subclass: {
+      type: String
     }
   }],
-  subclass: {
-    type: String,
-  },
   race: {
     type: String,
     enum: [
@@ -62,6 +63,10 @@ const characterSchema = new Schema({
     name: String,
     class: String
   }],
+  expertise: {
+    type: [String],
+    default: [],
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
