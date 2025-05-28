@@ -3,6 +3,8 @@
 require("dotenv").config();
 const cors = require("cors");
 
+const FRONTEND_URL= process.env.ORIGIN;
+
 // ℹ️ Connects to the database
 require("./db");
 
@@ -14,7 +16,7 @@ const app = express();
 
 app.use(
     cors({
-      origin: ['http://localhost:5173','https://dnd-app-client.netlify.app'],
+      origin: [FRONTEND_URL],
       credentials: true
     })
   );
