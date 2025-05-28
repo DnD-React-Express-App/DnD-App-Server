@@ -21,48 +21,10 @@ const characterSchema = new Schema({
       min: 1,
       default: 1
     },
-    stats: {
-        strength: { type: Number, required: true },
-        dexterity: { type: Number, required: true },
-        constitution: { type: Number, required: true },
-        intelligence: { type: Number, required: true },
-        wisdom: { type: Number, required: true },
-        charisma: { type: Number, required: true }
-    },
-    items: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Item'
-    }],
-    proficiencies: {
-        skills: [String],
-        armor: [String],
-        weapons: [String],
-        tools: [String]
-    },
-    expertise: {
-        type: [String],
-        default: [],
-    },
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    background: {
-        type: String,
-        required: true
-    },
-    backstory: {
-        type: String
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
+    subclass: {
+      type: String
     }
   }],
-  subclass: {
-    type: String,
-  },
   race: {
     type: String,
     enum: [
@@ -101,6 +63,10 @@ const characterSchema = new Schema({
     name: String,
     class: String
   }],
+  expertise: {
+    type: [String],
+    default: [],
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
