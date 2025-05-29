@@ -12,7 +12,7 @@ const modelMap = {
 };
 
 router.post('/', isAuthenticated, async (req, res) => {
-  const { type } = req.body;
+  const { type, ...itemData } = req.body;
 
   const Model = modelMap[type];
   if (!Model) {
@@ -20,7 +20,8 @@ router.post('/', isAuthenticated, async (req, res) => {
   }
 
   try {
-    const newItem = await Model.create(req.body);
+    itemData.creator = req.payload._id;
+    const newItem = await Model.create(itemData);
     res.status(201).json(newItem);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -60,14 +61,19 @@ router.put('/:id', isAuthenticated, async (req, res) => {
       return res.status(404).json({ error: 'Item not found' });
     }
 
-    item.set(req.body);     
-    await item.save();       
+    if (!item.creator.equals(req.payload._id)) {
+      return res.status(403).json({ error: 'Unauthorized: You do not own this item.' });
+    }
+
+    item.set(req.body);
+    await item.save();
 
     res.json(item);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 
 module.exports = router;
