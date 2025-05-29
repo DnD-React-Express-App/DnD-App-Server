@@ -40,6 +40,9 @@ app.use('/api/items', itemRoutes);
 const spellRoutes = require('./routes/spell.routes');
 app.use('/api/spells', spellRoutes);
 
+const uploadRoutes = require('./routes/upload.routes');
+app.use('/api/upload', uploadRoutes);
+
 const userRoutes = require('./routes/user.routes');
 app.use('/api/users', userRoutes);
 

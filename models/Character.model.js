@@ -6,6 +6,7 @@ const characterSchema = new Schema({
     type: String,
     required: true
   },
+  imageUrl: { type: String },
   classes: [{
     name: {
       type: String,
