@@ -45,13 +45,20 @@ router.get('/:id', isAuthenticated, async (req, res) => {
 
 router.delete('/:id', isAuthenticated, async (req, res) => {
   try {
-    const deleted = await Item.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ error: 'Item not found' });
+    const item = await Item.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    if (!item.creator.equals(req.payload._id) && !req.payload.isAdmin) {
+      return res.status(403).json({ error: 'Unauthorized: You do not own this item.' });
+    }
+
+    await item.deleteOne();
     res.json({ message: 'Item deleted' });
   } catch (err) {
     res.status(400).json({ error: 'Invalid ID' });
   }
 });
+
 
 router.put('/:id', isAuthenticated, async (req, res) => {
   try {
@@ -61,7 +68,7 @@ router.put('/:id', isAuthenticated, async (req, res) => {
       return res.status(404).json({ error: 'Item not found' });
     }
 
-    if (!item.creator.equals(req.payload._id)) {
+    if (!item.creator.equals(req.payload._id) && !req.payload.isAdmin) {
       return res.status(403).json({ error: 'Unauthorized: You do not own this item.' });
     }
 
