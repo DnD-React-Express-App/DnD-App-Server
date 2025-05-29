@@ -8,7 +8,12 @@ const itemSchema = new Schema({
         type: String,
         enum: ['Common', 'Uncommon', 'Rare', 'Very Rare', 'Legendary', 'Artifact'],
         default: 'Common'
-    }
+    },
+    creator: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      }
 }, {
     discriminatorKey: 'type',
     timestamps: true
