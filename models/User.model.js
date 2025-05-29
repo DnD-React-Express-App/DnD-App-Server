@@ -16,6 +16,7 @@ const userSchema = new Schema(
         return this.isNew;
       }
     },
+    imageUrl: { type: String },
     name: {
       type: String,
       required: [true, "Name is required."],
