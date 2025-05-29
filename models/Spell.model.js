@@ -55,7 +55,18 @@ const spellSchema = new Schema({
       'Psychic', 'Radiant', 'Slashing', 'Thunder',
       'Control', 'Buff', 'Debuff', 'Utility'
     ]
-  }
+  },
+
+  dieAmount: {
+    type: Number,
+    min: 0,
+    default: 0,
+  },
+  damageDie: {
+    type: String,
+    enum: ['', 'd4', 'd6', 'd8', 'd10', 'd12'],
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('Spell', spellSchema);
