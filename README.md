@@ -10,8 +10,11 @@ Here you can find the frontend to the application: https://github.com/DnD-React-
 ## Instructions to run locally
 
 Clone the repository -> git clone
+
 Install dependencies -> npm install
+
 create a .env file containing VITE_API_URL=http://localhost:5005/api
+
 Run the applications -> npm run dev
 
 ## Demo
