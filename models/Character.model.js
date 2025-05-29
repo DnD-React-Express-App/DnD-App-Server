@@ -7,6 +7,20 @@ const characterSchema = new Schema({
     required: true
   },
   imageUrl: { type: String },
+  shared: {
+    type: Boolean,
+    default: false
+  },
+  originalCharacterId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Character',
+    default: null
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   classes: [{
     name: {
       type: String,
@@ -22,9 +36,7 @@ const characterSchema = new Schema({
       min: 1,
       default: 1
     },
-    subclass: {
-      type: String
-    }
+    subclass: { type: String }
   }],
   race: {
     type: String,
@@ -68,18 +80,11 @@ const characterSchema = new Schema({
     type: [String],
     default: [],
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
   background: {
     type: String,
     required: true
   },
-  backstory: {
-    type: String
-  },
+  backstory: { type: String },
   createdAt: {
     type: Date,
     default: Date.now
