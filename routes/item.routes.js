@@ -37,6 +37,9 @@ router.get('/:id', isAuthenticated, async (req, res) => {
   try {
     const item = await Item.findById(req.params.id);
     if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    console.log('Damage Types:', item.damageTypes);
+
     res.json(item);
   } catch (err) {
     res.status(400).json({ error: 'Invalid ID format' });
