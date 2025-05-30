@@ -111,7 +111,7 @@ router.post("/:id/save", isAuthenticated, async (req, res, next) => {
       return res.status(404).json({ message: "Character not found or not shared." });
     }
 
-    // 🔒 Check if user already saved this character
+    // Check if user already saved this character
     const alreadySaved = await Character.findOne({
       originalCharacterId: id,
       user: req.payload._id,
@@ -121,7 +121,7 @@ router.post("/:id/save", isAuthenticated, async (req, res, next) => {
       return res.status(409).json({ message: "You’ve already saved this character." });
     }
 
-    // Clone the character
+    // Save the character
     const { _id, user, ...rest } = sharedChar;
 
     const savedCharacter = await Character.create({
