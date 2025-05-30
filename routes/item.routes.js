@@ -72,14 +72,22 @@ router.put('/:id', isAuthenticated, async (req, res) => {
       return res.status(403).json({ error: 'Unauthorized: You do not own this item.' });
     }
 
-    item.set(req.body);
-    await item.save();
+    const Model = modelMap[item.type];
+    if (!Model) {
+      return res.status(400).json({ error: 'Invalid item type' });
+    }
 
-    res.json(item);
+    const updated = await Model.findByIdAndUpdate(item._id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.json(updated);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 
 
